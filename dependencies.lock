@@ -1,0 +1,17 @@
+dependencies:
+  idf:
+    source:
+      type: idf
+    version: 5.5.3
+  lvgl/lvgl:
+    dependencies: []
+    source:
+      path: C:\Users\XSE-R\Documents\ESP32_project\for_test\PCBA-MC001A1V01_EX03\components\lvgl__lvgl
+      type: local
+    version: 9.1.0
+direct_dependencies:
+- idf
+- lvgl/lvgl
+manifest_hash: 60c91a5720dd7c1d88a5891782970612c1df7345608b44dd0966f6eb9eb83a90
+target: esp32s3
+version: 2.0.0

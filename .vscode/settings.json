@@ -1,0 +1,29 @@
+{
+    "C_Cpp.intelliSenseEngine": "default",
+    "idf.espIdfPathWin": "c:\\Users\\XSE-R\\Documents\\ESP32_project\\IDF\\v5.2.1\\esp-idf",
+    "idf.openOcdConfigs": [
+        "board/esp32s2-bridge.cfg"
+    ],
+    "idf.portWin": "COM11",
+    "idf.toolsPathWin": "c:\\Users\\XSE-R\\Documents\\ESP32_project\\IDF",
+    "idf.flashType": "UART",
+    "idf.customExtraVars": {
+        "OPENOCD_SCRIPTS": "c:\\Users\\XSE-R\\Documents\\ESP32_project\\IDF\\tools\\openocd-esp32\\v0.12.0-esp32-20230921/openocd-esp32/share/openocd/scripts",
+        "IDF_CCACHE_ENABLE": "1",
+        "ESP_ROM_ELF_DIR": "c:\\Users\\XSE-R\\Documents\\ESP32_project\\IDF\\tools\\esp-rom-elfs\\20230320/",
+        "IDF_TARGET": "esp32s3"
+    },
+    "idf.currentSetup": "C:\\Users\\XSE-R\\Documents\\ESP32_project\\IDF\\v5.5.3\\v5.5.3\\esp-idf",
+    "files.associations": {
+        "display.h": "c",
+        "ui.h": "c",
+        "esp_lvgl_port.h": "c",
+        "freertos.h": "c",
+        "esp_log.h": "c",
+        "i2c_master.h": "c",
+        "queue.h": "c",
+        "stdio.h": "c",
+        "format": "c",
+        "task.h": "c"
+    }
+}
