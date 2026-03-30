@@ -114,30 +114,30 @@ SquareLine Studio is a professional UI design tool that allows you to design use
 
 ```
 project/
-©À©¤©¤ ?components
-©¦?? ©À©¤©¤ ?aw9523
-©¦?? ©À©¤©¤ ?display
-©¦?? ©À©¤©¤ ?espressif__esp_lvgl_port
-©¦?? ©À©¤©¤ ?lvgl__lvgl
+©À©¤©¤ ? components
+©¦?? ©À©¤©¤ ? aw9523
+©¦?? ©À©¤©¤ ? display
+©¦?? ©À©¤©¤ ? espressif__esp_lvgl_port
+©¦?? ©À©¤©¤ ? lvgl__lvgl
 ©¦?? ©À©¤©¤    .
 ©¦?? ©À©¤©¤    .
 ©¦?? ©¸©¤©¤    .
-©À©¤©¤ ?main
-©¦?? ©À©¤©¤ ?CMakeLists.txt
-©¦?? ©À©¤©¤ ?idf_component.yml
-©¦?? ©À©¤©¤ ?main.c
-©¦?? ©¸©¤©¤ ?ui  <------------- replace
-©¦??     ©À©¤©¤ ?components
-©¦??     ©À©¤©¤ ?fonts
-©¦??     ©À©¤©¤ ?screens
-©¦??     ©À©¤©¤ ?CMakeLists.txt
-©¦??     ©À©¤©¤ ?filelist.txt
-©¦??     ©À©¤©¤ ?project.info
-©¦??     ©À©¤©¤ ?ui.c
-©¦??     ©À©¤©¤ ?ui.h
-©¦??     ©À©¤©¤ ?ui_events.h
-©¦??     ©À©¤©¤ ?ui_helpers.c
-©¦??     ©¸©¤©¤ ?ui_helpers.h
-©À©¤©¤ ?README.md
-©¸©¤©¤ ?README_zh.md
+©À©¤©¤ ? main
+©¦?? ©À©¤©¤ ? CMakeLists.txt
+©¦?? ©À©¤©¤ ? idf_component.yml
+©¦?? ©À©¤©¤ ? main.c
+©¦?? ©¸©¤©¤ ? ui  <------------- replace
+©¦??     ©À©¤©¤ ? components
+©¦??     ©À©¤©¤ ? fonts
+©¦??     ©À©¤©¤ ? screens
+©¦??     ©À©¤©¤ ? CMakeLists.txt
+©¦??     ©À©¤©¤ ? filelist.txt
+©¦??     ©À©¤©¤ ? project.info
+©¦??     ©À©¤©¤ ? ui.c
+©¦??     ©À©¤©¤ ? ui.h
+©¦??     ©À©¤©¤ ? ui_events.h
+©¦??     ©À©¤©¤ ? ui_helpers.c
+©¦??     ©¸©¤©¤ ? ui_helpers.h
+©À©¤©¤ ? README.md
+©¸©¤©¤ ? README_zh.md
 ```
