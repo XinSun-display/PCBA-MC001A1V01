@@ -32,12 +32,15 @@ void ui_init(void)
     lv_disp_set_theme(dispp, theme);
     ui_Screen1_screen_init();
     ui_GPIO_screen_init();
+    ui_imgView_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_Screen1);
+    // lv_disp_load_scr(ui_Screen1);
+    lv_disp_load_scr(ui_imgView);
 }
 
 void ui_destroy(void)
 {
     ui_Screen1_screen_destroy();
     ui_GPIO_screen_destroy();
+    ui_imgView_screen_destroy();
 }

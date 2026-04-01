@@ -20,7 +20,7 @@
 #include "ui.h"
 
 /* LCD settings */
-#define LCD_COLOR_SPACE     (ESP_LCD_COLOR_SPACE_RGB)
+#define LCD_COLOR_SPACE     (ESP_LCD_COLOR_SPACE_BGR)//(ESP_LCD_COLOR_SPACE_RGB)
 #define LCD_BITS_PER_PIXEL  (16)
 #define LCD_DRAW_BUFF_DOUBLE (1)
 #define LCD_DRAW_BUFF_HEIGHT (16)
@@ -78,6 +78,7 @@ static lv_display_t *lvgl_disp = NULL;
  {
    LCD_XF043AR_WQ  = 0x00, /* XF043AR_WQ */
    LCD_XF05AR_WQ, /* XF05AR_WQ */
+   LCD_XF07AR_WQ, /* XF07AR_WQ */
 
    LCD_TYPE_NUM /* LCD models total */
  }LCD_TypeDef;
@@ -109,11 +110,26 @@ const LCD_PARAM_TypeDef lcd_param[LCD_TYPE_NUM]={
         .CTP_init = FT5446_Init,
         .CTP_scan = FT5446_ScanV2,
     },
+    {/* XF07AR_WQ */
+        .hbp = 40,
+        .vbp = 31,
+        .hsw = 10,
+        .vsw = 6,
+        .hfp = 40,
+        .vfp = 18,
+        .clock_HZ = 24000000,   //24MHz
+        .lcd_pixel_width = 800,
+        .lcd_pixel_height = 480,
+        .CTP_init = NULL,
+        .CTP_scan = NULL,
+    },
 };
 
 /* Current used LCD, default is LCD_XF05AR_WQ */
 // #define CUR_LCD  LCD_XF043AR_WQ
-#define CUR_LCD  LCD_XF05AR_WQ
+// #define CUR_LCD  LCD_XF05AR_WQ
+#define CUR_LCD  LCD_XF07AR_WQ
+
 
 /**
  * @brief Initialize LCD
@@ -232,7 +248,7 @@ static esp_err_t app_lvgl_init(void)
         .flags = {
             .buff_dma = true,
             .buff_spiram = true,
-            .swap_bytes = true,
+            .swap_bytes = false,
         }
     };
 

@@ -81,7 +81,7 @@ void ui_GPIO_screen_init(void)
     lv_obj_set_flex_flow(ui_Screen2Layout1, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(ui_Screen2Layout1, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_remove_flag(ui_Screen2Layout1, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_pad_row(ui_Screen2Layout1, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_Screen2Layout1, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_Screen2Layout1, 30, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Screen2Layout1, &ui_font_tw1616, LV_PART_MAIN | LV_STATE_DEFAULT);
 

@@ -20,6 +20,7 @@ extern "C" {
 
 #include "screens/ui_Screen1.h"
 #include "screens/ui_GPIO.h"
+#include "screens/ui_imgView.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -27,6 +28,9 @@ extern "C" {
 // EVENTS
 
 extern lv_obj_t * ui____initial_actions0;
+
+// IMAGES AND IMAGE SETS
+LV_IMG_DECLARE(ui_img_689278962);    // assets/水果圖240x320.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_tw1616);
