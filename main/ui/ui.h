@@ -30,7 +30,7 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
-LV_IMG_DECLARE(ui_img_689278962);    // assets/水果圖240x320.png
+LV_IMG_DECLARE(ui_img_000_png);    // assets/000.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_tw1616);

@@ -84,6 +84,7 @@ void FT5446_Init(void)
     };
     ESP_ERROR_CHECK(i2c_master_bus_add_device(i2c_bus_handle, &dev_cfg, &FT5446_dev_handle));
 
+    // hw reset
 	aw9523_io_set_level(AW9523_PORT_1,1,1) ;
     vTaskDelay(20 / portTICK_PERIOD_MS);  
     aw9523_io_set_level(AW9523_PORT_1,1,0) ;
@@ -259,7 +260,7 @@ void FT5446_ScanV1(lv_indev_t *indev_drv, lv_indev_data_t *data)
     {
         FT5XXX_Reg(FT5XXX_OP_TP1_REG,temp,4);
         data->state = LV_INDEV_STATE_PR;
-        // ESP_LOGD(TAG, "touch: x=%ld, y=%ld\r\n", data->point.x, data->point.y);
+        // ESP_LOGI(TAG, "touch: x=%ld, y=%ld\r\n", data->point.x, data->point.y);
     }	
     else
     {
@@ -295,7 +296,7 @@ void FT5446_ScanV2(lv_indev_t *indev_drv, lv_indev_data_t *data)
     if (temp[0] > 0)//has touch?
     {
         data->state = LV_INDEV_STATE_PR;      
-        // ESP_LOGD(TAG, "touch: x=%ld, y=%ld\r\n", data->point.x, data->point.y);
+        // ESP_LOGI(TAG, "touch: x=%ld, y=%ld\r\n", data->point.x, data->point.y);
     }	
     else
     {

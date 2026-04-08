@@ -17,14 +17,12 @@ void ui_imgView_screen_init(void)
     lv_obj_remove_flag(ui_imgView, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_Image1 = lv_image_create(ui_imgView);
-    lv_image_set_src(ui_Image1, &ui_img_689278962);
+    lv_image_set_src(ui_Image1, &ui_img_000_png);
     lv_obj_set_width(ui_Image1, lv_pct(100));
     lv_obj_set_height(ui_Image1, lv_pct(100));
     lv_obj_set_align(ui_Image1, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Image1, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_remove_flag(ui_Image1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_image_set_rotation(ui_Image1, 900);
-    lv_image_set_scale(ui_Image1, 512);
 
 }
 

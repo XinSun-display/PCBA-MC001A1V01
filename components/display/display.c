@@ -17,6 +17,7 @@
 #include "display.h"
 #include "aw9523.h"
 #include "CTP_FT5446.h"
+#include "CTP_gt9xx.h"
 #include "ui.h"
 
 /* LCD settings */
@@ -78,7 +79,7 @@ static lv_display_t *lvgl_disp = NULL;
  {
    LCD_XF043AR_WQ  = 0x00, /* XF043AR_WQ */
    LCD_XF05AR_WQ, /* XF05AR_WQ */
-   LCD_XF07AR_WQ, /* XF07AR_WQ */
+   LCD_XF070WV02B_TTUL, /* XF070WV02B_TTUL */
 
    LCD_TYPE_NUM /* LCD models total */
  }LCD_TypeDef;
@@ -110,25 +111,25 @@ const LCD_PARAM_TypeDef lcd_param[LCD_TYPE_NUM]={
         .CTP_init = FT5446_Init,
         .CTP_scan = FT5446_ScanV2,
     },
-    {/* XF07AR_WQ */
+    {/* XF070WV02B_TTUL */
         .hbp = 40,
         .vbp = 31,
         .hsw = 10,
         .vsw = 6,
         .hfp = 40,
         .vfp = 18,
-        .clock_HZ = 24000000,   //24MHz
+        .clock_HZ = 30000000,   //30MHz
         .lcd_pixel_width = 800,
         .lcd_pixel_height = 480,
-        .CTP_init = NULL,
-        .CTP_scan = NULL,
+        .CTP_init = GT915_Init,
+        .CTP_scan = GT915_Scan,
     },
 };
 
 /* Current used LCD, default is LCD_XF05AR_WQ */
 // #define CUR_LCD  LCD_XF043AR_WQ
 // #define CUR_LCD  LCD_XF05AR_WQ
-#define CUR_LCD  LCD_XF07AR_WQ
+#define CUR_LCD  LCD_XF070WV02B_TTUL
 
 
 /**
