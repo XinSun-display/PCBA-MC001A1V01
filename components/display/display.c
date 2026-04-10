@@ -25,6 +25,12 @@
 #define LCD_BITS_PER_PIXEL  (16)
 #define LCD_DRAW_BUFF_DOUBLE (1)
 #define LCD_DRAW_BUFF_HEIGHT (16)
+
+/*
+ * Note: Ensure settings align with the hardware configuration.
+ * On original hardware, LCD_BL_ON_LEVEL must be set to 0.
+ * Be advised: This may trigger visible stripes on specific display models during the boot process.
+ */
 #define LCD_BL_ON_LEVEL     (0)
 
 /* LCD pins */
@@ -200,15 +206,12 @@ static esp_err_t app_lcd_init(void)
     aw9523_io_set_level(AW9523_PORT_1, 0, 0);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     aw9523_io_set_level(AW9523_PORT_1, 0, 1);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+    vTaskDelay(120 / portTICK_PERIOD_MS);
 
     esp_lcd_panel_reset(lcd_panel);
     esp_lcd_panel_init(lcd_panel);
     esp_lcd_panel_mirror(lcd_panel, true, true);
     esp_lcd_panel_disp_on_off(lcd_panel, true);
-
-    /* LCD backlight on */
-    ESP_ERROR_CHECK(gpio_set_level(LCD_GPIO_BL, LCD_BL_ON_LEVEL));
 
     return ret;
 }
@@ -312,6 +315,9 @@ void display_init(void)
 {
     app_lcd_init();
     app_lvgl_init();
+    
+    /* LCD backlight on */
+    ESP_ERROR_CHECK(gpio_set_level(LCD_GPIO_BL, LCD_BL_ON_LEVEL));
 
     /* Task lock */
     lvgl_port_lock(0);
