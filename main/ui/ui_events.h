@@ -10,6 +10,11 @@
 extern "C" {
 #endif
 
+void Button_Backlight_clicked(lv_event_t * e);
+void switch_IO__value_changed(lv_event_t * e);
+void button_backlightOnOff_clicked(lv_event_t * e);
+void slider_backlight_value_changed(lv_event_t * e);
+
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

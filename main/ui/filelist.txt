@@ -1,8 +1,9 @@
 screens/ui_Screen1.c
 screens/ui_GPIO.c
 screens/ui_imgView.c
+screens/ui_backlight.c
 ui.c
 components/ui_comp_hook.c
 ui_helpers.c
-images/ui_img_000_png.c
+images/ui_img_1079216036.c
 fonts/ui_font_tw1616.c

@@ -21,6 +21,7 @@ extern "C" {
 #include "screens/ui_Screen1.h"
 #include "screens/ui_GPIO.h"
 #include "screens/ui_imgView.h"
+#include "screens/ui_backlight.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -30,7 +31,7 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
-LV_IMG_DECLARE(ui_img_000_png);    // assets/000.png
+LV_IMG_DECLARE(ui_img_1079216036);    // assets/水果圖_480x800.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_tw1616);

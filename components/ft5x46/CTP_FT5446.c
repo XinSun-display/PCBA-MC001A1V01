@@ -282,7 +282,7 @@ void FT5446_ScanV1(lv_indev_t *indev_drv, lv_indev_data_t *data)
 void FT5446_ScanV2(lv_indev_t *indev_drv, lv_indev_data_t *data)
 {
     uint8_t mode = 0;
-    uint8_t temp[4];
+    uint8_t temp[5];
 
     /*Read status register*/
     FT5XXX_Reg(FT5XXX_OP_TD_STATUS,&mode,1);

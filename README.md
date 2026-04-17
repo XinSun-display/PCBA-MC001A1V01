@@ -24,6 +24,10 @@ PCBA-MC001A1V0x Development Board Demo Project
 
 3. **Open Project**
    - Use "File > Open Folder" to open this project folder
+   - Edit `.vscode/settings.json` and `.vscode/c_cpp_properties.json`, then change `IDF_PATH` and `IDF_TOOLS_PATH` to your own paths
+     ![settings](/docs/assets/img/settings.png)
+     ![c_cpp_properties](/docs/assets/img/c_cpp_properties.png)
+
    - VS Code will automatically recognize it as an ESP-IDF project
 
 ### Version Information
@@ -108,36 +112,37 @@ SquareLine Studio is a professional UI design tool that allows you to design use
 #### Integrating into Project
 
 1. **Copy Files**:
-   - Copy the exported `ui.c` and `ui.h` files to the `main/ui/` folder
+   - Copy all exported files and folders to the `main/ui/` folder.
 2. **Call UI**:
    - Call the `ui_init()` function in display_init() in `components/display/display.c`
 
 ```
 project/
 ├── 📁 components
-│   ├── 📁 aw9523
-│   ├── 📁 display
-│   ├── 📁 espressif__esp_lvgl_port
-│   ├── 📁 lvgl__lvgl
-│   ├──    .
-│   ├──    .
-│   └──    .
+│   ├── 📁 aw9523
+│   ├── 📁 display
+│   ├── 📁 espressif__esp_lvgl_port
+│   ├── 📁 lvgl__lvgl
+│   ├──    .
+│   ├──    .
+│   └──    .
 ├── 📁 main
-│   ├── 📄 CMakeLists.txt
-│   ├── 📄 idf_component.yml
-│   ├── 📄 main.c
-│   └── 📁 ui  <------------- replace
-│       ├── 📁 components
-│       ├── 📁 fonts
-│       ├── 📁 screens
-│       ├── 📄 CMakeLists.txt
-│       ├── 📄 filelist.txt
-│       ├── 📄 project.info
-│       ├── 📄 ui.c
-│       ├── 📄 ui.h
-│       ├── 📄 ui_events.h
-│       ├── 📄 ui_helpers.c
-│       └── 📄 ui_helpers.h
+│   ├── 📄 CMakeLists.txt
+│   ├── 📄 idf_component.yml
+│   ├── 📄 main.c
+│   └── 📁 ui  <------------- replace
+│       ├── 📁 components
+│       ├── 📁 fonts
+│       ├── 📁 images
+│       ├── 📁 screens
+│       ├── 📄 CMakeLists.txt
+│       ├── 📄 filelist.txt
+│       ├── 📄 project.info
+│       ├── 📄 ui.c
+│       ├── 📄 ui.h
+│       ├── 📄 ui_events.h
+│       ├── 📄 ui_helpers.c
+│       └── 📄 ui_helpers.h
 ├── 📄 README.md
 └── 📄 README_zh.md
 

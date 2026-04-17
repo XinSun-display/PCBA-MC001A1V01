@@ -43,16 +43,118 @@ lv_obj_t * ui_LabelIO10 = NULL;
 lv_obj_t * ui_switch11 = NULL;
 lv_obj_t * ui_EXTLSIO11 = NULL;
 lv_obj_t * ui_LabelIO11 = NULL;
-lv_obj_t * ui_switch12 = NULL;
-lv_obj_t * ui_EXTLSIO12 = NULL;
-lv_obj_t * ui_LabelIO12 = NULL;
-lv_obj_t * ui_switch13 = NULL;
-lv_obj_t * ui_EXTLSIO13 = NULL;
-lv_obj_t * ui_LabelIO13 = NULL;
 lv_obj_t * ui_Screen2Layout2 = NULL;
 lv_obj_t * ui_Src2ButtonBack = NULL;
 lv_obj_t * ui_src2LabelBack = NULL;
 // event funtions
+void ui_event_EXTLSIO0(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO5(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO6(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO7(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO8(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO9(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO10(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
+void ui_event_EXTLSIO11(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        switch_IO__value_changed(e);
+    }
+}
+
 void ui_event_Src2ButtonBack(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -329,46 +431,6 @@ void ui_GPIO_screen_init(void)
     lv_obj_set_align(ui_LabelIO11, LV_ALIGN_CENTER);
     lv_label_set_text(ui_LabelIO11, "EXT_LS_IO11");
 
-    ui_switch12 = lv_obj_create(ui_Screen2Layout1);
-    lv_obj_remove_style_all(ui_switch12);
-    lv_obj_set_height(ui_switch12, 50);
-    lv_obj_set_width(ui_switch12, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_align(ui_switch12, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_switch12, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_switch12, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_switch12, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_EXTLSIO12 = lv_switch_create(ui_switch12);
-    lv_obj_set_width(ui_EXTLSIO12, 50);
-    lv_obj_set_height(ui_EXTLSIO12, 25);
-    lv_obj_set_align(ui_EXTLSIO12, LV_ALIGN_CENTER);
-
-    ui_LabelIO12 = lv_label_create(ui_switch12);
-    lv_obj_set_width(ui_LabelIO12, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelIO12, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelIO12, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelIO12, "EXT_ESP_IO0");
-
-    ui_switch13 = lv_obj_create(ui_Screen2Layout1);
-    lv_obj_remove_style_all(ui_switch13);
-    lv_obj_set_height(ui_switch13, 50);
-    lv_obj_set_width(ui_switch13, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_align(ui_switch13, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_switch13, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_switch13, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_switch13, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_EXTLSIO13 = lv_switch_create(ui_switch13);
-    lv_obj_set_width(ui_EXTLSIO13, 50);
-    lv_obj_set_height(ui_EXTLSIO13, 25);
-    lv_obj_set_align(ui_EXTLSIO13, LV_ALIGN_CENTER);
-
-    ui_LabelIO13 = lv_label_create(ui_switch13);
-    lv_obj_set_width(ui_LabelIO13, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelIO13, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelIO13, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelIO13, "EXT_ESP_IO1");
-
     ui_Screen2Layout2 = lv_obj_create(ui_GPIO);
     lv_obj_remove_style_all(ui_Screen2Layout2);
     lv_obj_set_width(ui_Screen2Layout2, lv_pct(100));
@@ -391,6 +453,18 @@ void ui_GPIO_screen_init(void)
     lv_obj_set_align(ui_src2LabelBack, LV_ALIGN_CENTER);
     lv_label_set_text(ui_src2LabelBack, "back");
 
+    lv_obj_add_event_cb(ui_EXTLSIO0, ui_event_EXTLSIO0, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO1, ui_event_EXTLSIO1, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO2, ui_event_EXTLSIO2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO3, ui_event_EXTLSIO3, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO4, ui_event_EXTLSIO4, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO5, ui_event_EXTLSIO5, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO6, ui_event_EXTLSIO6, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO7, ui_event_EXTLSIO7, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO8, ui_event_EXTLSIO8, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO9, ui_event_EXTLSIO9, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO10, ui_event_EXTLSIO10, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EXTLSIO11, ui_event_EXTLSIO11, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Src2ButtonBack, ui_event_Src2ButtonBack, LV_EVENT_ALL, NULL);
 
 }
@@ -438,12 +512,6 @@ void ui_GPIO_screen_destroy(void)
     ui_switch11 = NULL;
     ui_EXTLSIO11 = NULL;
     ui_LabelIO11 = NULL;
-    ui_switch12 = NULL;
-    ui_EXTLSIO12 = NULL;
-    ui_LabelIO12 = NULL;
-    ui_switch13 = NULL;
-    ui_EXTLSIO13 = NULL;
-    ui_LabelIO13 = NULL;
     ui_Screen2Layout2 = NULL;
     ui_Src2ButtonBack = NULL;
     ui_src2LabelBack = NULL;

@@ -9,6 +9,7 @@
 #include "esp_lcd_panel_ops.h"
 #include "esp_lcd_panel_rgb.h"
 #include "driver/gpio.h"
+#include "driver/ledc.h"
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_check.h"
@@ -18,20 +19,14 @@
 #include "aw9523.h"
 #include "CTP_FT5446.h"
 #include "CTP_gt9xx.h"
+#include "lcd_backlight.h"  
 #include "ui.h"
 
 /* LCD settings */
 #define LCD_COLOR_SPACE     (ESP_LCD_COLOR_SPACE_BGR)//(ESP_LCD_COLOR_SPACE_RGB)
 #define LCD_BITS_PER_PIXEL  (16)
 #define LCD_DRAW_BUFF_DOUBLE (1)
-#define LCD_DRAW_BUFF_HEIGHT (16)
-
-/*
- * Note: Ensure settings align with the hardware configuration.
- * On original hardware, LCD_BL_ON_LEVEL must be set to 0.
- * Be advised: This may trigger visible stripes on specific display models during the boot process.
- */
-#define LCD_BL_ON_LEVEL     (0)
+#define LCD_DRAW_BUFF_HEIGHT (10)
 
 /* LCD pins */
 #define LCD_GPIO_BL (GPIO_NUM_45)
@@ -118,13 +113,13 @@ const LCD_PARAM_TypeDef lcd_param[LCD_TYPE_NUM]={
         .CTP_scan = FT5446_ScanV2,
     },
     {/* XF070WV02B_TTUL */
-        .hbp = 40,
-        .vbp = 31,
-        .hsw = 10,
-        .vsw = 6,
-        .hfp = 40,
-        .vfp = 18,
-        .clock_HZ = 30000000,   //30MHz
+        .hbp = 46,
+        .vbp = 23,
+        .hsw = 2,
+        .vsw = 2,
+        .hfp = 210,
+        .vfp = 22,
+        .clock_HZ = 33300000,   //33.3MHz
         .lcd_pixel_width = 800,
         .lcd_pixel_height = 480,
         .CTP_init = GT915_Init,
@@ -147,12 +142,9 @@ static esp_err_t app_lcd_init(void)
 {
     esp_err_t ret = ESP_OK;
 
-    /* LCD backlight */
-    gpio_config_t bk_gpio_config = {
-        .mode = GPIO_MODE_OUTPUT,
-        .pin_bit_mask = 1ULL << LCD_GPIO_BL
-    };
-    ESP_ERROR_CHECK(gpio_config(&bk_gpio_config));
+    /* LCD backlight init*/
+    lcd_backlight_init(LCD_GPIO_BL);
+    lcd_backlight_onoff(0);  
 
     // /* LCD initialization */
     esp_lcd_rgb_panel_config_t panel_config = {
@@ -314,10 +306,12 @@ void ui_demo(void)
 void display_init(void)
 {
     app_lcd_init();
-    app_lvgl_init();
-    
+    app_lvgl_init(); 
+
+    /* Wait for first frame */
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     /* LCD backlight on */
-    ESP_ERROR_CHECK(gpio_set_level(LCD_GPIO_BL, LCD_BL_ON_LEVEL));
+    lcd_backlight_onoff(1);  
 
     /* Task lock */
     lvgl_port_lock(0);

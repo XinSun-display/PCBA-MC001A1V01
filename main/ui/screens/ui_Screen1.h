@@ -19,7 +19,9 @@ extern lv_obj_t * ui_Screen1Row2;
 extern void ui_event_ButtonGPIO(lv_event_t * e);
 extern lv_obj_t * ui_ButtonGPIO;
 extern lv_obj_t * ui_Label1;
-extern lv_obj_t * ui_Button2;
+extern void ui_event_ButtonBacklight(lv_event_t * e);
+extern lv_obj_t * ui_ButtonBacklight;
+extern lv_obj_t * ui_Label2;
 extern lv_obj_t * ui_Screen1Row3;
 // CUSTOM VARIABLES
 
