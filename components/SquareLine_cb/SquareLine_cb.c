@@ -4,9 +4,18 @@
    Note: The function names must match the event names generated in the SquareLine Studio UI.*/
 
 #include "lvgl.h"
+#include "esp_lvgl_port.h"
 #include "lcd_backlight/lcd_backlight.h"
 #include "aw9523.h"
 #include "ui.h"
+#include "esp_log.h"
+#include "twai/BSP_TWAI.h"
+
+#define TAG "SquareLine_cb"
+
+TaskHandle_t TextArea1Can_taskHandle = NULL;
+static char TextArea1Can_insertText[128] ={0};
+void TextArea1Can_task(void *arg);
 
 //********* page:Screen1 *********
 void Button_Backlight_clicked(lv_event_t * e)
@@ -23,6 +32,34 @@ void Button_Backlight_clicked(lv_event_t * e)
 
         _ui_screen_change(&ui_backlight, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0, &ui_backlight_screen_init);
     }
+}
+
+void Button_CanClass_clicked(lv_event_t * e)
+{
+    if(!TextArea1Can_taskHandle)// first time to click the button, create a task to receive the CAN message and add some labels to the button
+    {
+        xTaskCreate(TextArea1Can_task, "TextArea1Can_task", 4096, NULL, 10, &TextArea1Can_taskHandle);// create a task to receive the CAN message
+
+        lv_obj_t* Label_canTest1 = lv_label_create(ui_ButtonCanTest1);
+        lv_obj_set_width(Label_canTest1, LV_SIZE_CONTENT);   
+        lv_obj_set_height(Label_canTest1, LV_SIZE_CONTENT);    
+        lv_obj_set_align(Label_canTest1, LV_ALIGN_CENTER);
+        lv_label_set_text(Label_canTest1, "send test 1");
+
+        lv_obj_t* Label_canTest2 = lv_label_create(ui_ButtonCanTest2);
+        lv_obj_set_width(Label_canTest2, LV_SIZE_CONTENT);   
+        lv_obj_set_height(Label_canTest2, LV_SIZE_CONTENT);    
+        lv_obj_set_align(Label_canTest2, LV_ALIGN_CENTER);
+        lv_label_set_text(Label_canTest2, "can test 2");
+
+        lv_obj_t* Label_canTest3 = lv_label_create(ui_ButtonCanTest3);
+        lv_obj_set_width(Label_canTest3, LV_SIZE_CONTENT);   
+        lv_obj_set_height(Label_canTest3, LV_SIZE_CONTENT);    
+        lv_obj_set_align(Label_canTest3, LV_ALIGN_CENTER);
+        lv_label_set_text(Label_canTest3, "can test 3");
+    }
+    
+    _ui_screen_change(&ui_canClass, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0, &ui_canClass_screen_init);
 }
 //********* page:Screen1 end *********
 
@@ -85,9 +122,6 @@ void switch_IO__value_changed(lv_event_t * e)
 }
 //********* page:GPIO end *********
 
-//********* page:imgView *********
-//********* page:imgView end *********
-
 //********* page:backlight *********
 void button_backlightOnOff_clicked(lv_event_t * e)
 {
@@ -113,3 +147,125 @@ void slider_backlight_value_changed(lv_event_t * e)
     #endif
 }
 //********* page:backlight end *********
+
+//********* page:canClass *********
+void TextArea1Can_update_text_cb(void * user_data) 
+{
+    lv_textarea_add_text(ui_TextArea1Can, user_data);     
+}
+
+void TextArea1Can_task(void *arg) 
+{
+    ESP_LOGI(TAG, "TextArea1Can_task started");
+
+    while(1)
+    {
+        twai_message_t message;
+        QueueHandle_t* twai_RX_message_queue = twai_get_rx_queue();
+        if(xQueueReceive(*twai_RX_message_queue, &message, pdMS_TO_TICKS(100)) == pdPASS)
+        {                   
+            // For thread safety, update the UI asynchronously in the LVGL thread
+            TextArea1Can_insertText[0] = '\0';
+            snprintf(TextArea1Can_insertText, sizeof(TextArea1Can_insertText), "Message received: %s ID=0x%03lX, Data=[%02X %02X %02X %02X %02X %02X %02X %02X]\r\n",
+                    message.extd ? "Extended" : "Standard",
+                    message.identifier,
+                    message.data[0], message.data[1], message.data[2], message.data[3],
+                    message.data[4], message.data[5], message.data[6], message.data[7]);
+
+            lv_async_call(TextArea1Can_update_text_cb, &TextArea1Can_insertText); // For thread safety, needs to be called asynchronously and executed in the LVGL thread
+        }
+    }
+}
+
+void Button_canTest1_clicked(lv_event_t * e)
+{
+    // ESP_LOGI(TAG,"Button_canTest1_clicked\n");
+    twai_message_t message;
+    message.identifier = 0x000;
+    message.data_length_code = 8;
+    message.data[0] = 0x0A;
+    message.data[1] = 0x0B;
+    message.data[2] = 0x0C;
+    message.data[3] = 0x0D;
+    message.data[4] = 0x0E;
+    message.data[5] = 0x0F;
+    message.data[6] = 0x10;
+    message.data[7] = 0x11;
+    message.extd = 0;                // Standard 11-bit identifier
+    message.rtr = 0;                 // Data frame (not a remote frame)
+    message.ss = 1;                  // Not single shot
+    message.self = 0;                // Normal transmission (not self reception)
+    twai_send(&message);
+    TextArea1Can_insertText[0] = '\0';
+    snprintf(TextArea1Can_insertText, sizeof(TextArea1Can_insertText), "Message sent: %s ID=0x%03lX, Data=[%02X %02X %02X %02X %02X %02X %02X %02X]\r\n",
+                    message.extd ? "Extended" : "Standard",
+                    message.identifier,
+                    message.data[0], message.data[1], message.data[2], message.data[3],
+                    message.data[4], message.data[5], message.data[6], message.data[7]);
+    lv_textarea_add_text(ui_TextArea1Can, TextArea1Can_insertText);
+}
+
+void Button_canTest2_clicked(lv_event_t * e)
+{
+    // ESP_LOGI(TAG,"Button_canTest2_clicked\n");
+    twai_message_t message;
+    message.identifier = 0x100;
+    message.data_length_code = 8;
+    message.data[0] = 0x01;
+    message.data[1] = 0x02;
+    message.data[2] = 0x03;
+    message.data[3] = 0x04;
+    message.data[4] = 0x05;
+    message.data[5] = 0x06;
+    message.data[6] = 0x07;
+    message.data[7] = 0x08;
+    message.extd = 1;                // Standard 11-bit identifier
+    message.rtr = 0;                 // Data frame (not a remote frame)
+    message.ss = 1;                  // Not single shot
+    message.self = 0;                // Normal transmission (not self reception)
+    twai_send(&message);
+    TextArea1Can_insertText[0] = '\0';
+    snprintf(TextArea1Can_insertText, sizeof(TextArea1Can_insertText), "Message sent: %s ID=0x%03lX, Data=[%02X %02X %02X %02X %02X %02X %02X %02X]\r\n",
+                    message.extd ? "Extended" : "Standard",
+                    message.identifier,
+                    message.data[0], message.data[1], message.data[2], message.data[3],
+                    message.data[4], message.data[5], message.data[6], message.data[7]);
+    lv_textarea_add_text(ui_TextArea1Can, TextArea1Can_insertText);
+}
+
+void Button_canTest3_clicked(lv_event_t * e)
+{
+    // ESP_LOGI(TAG,"Button_canTest3_clicked\n");
+    twai_message_t message;
+    message.identifier = 0x050;
+    message.data_length_code = 8;
+    message.data[0] = 0x1a;
+    message.data[1] = 0x2b;
+    message.data[2] = 0x3c;
+    message.data[3] = 0x4d;
+    message.data[4] = 0x5e;
+    message.data[5] = 0x6f;
+    message.data[6] = 0x70;
+    message.data[7] = 0x81;
+    message.extd = 0;                // Standard 11-bit identifier
+    message.rtr = 0;                 // Data frame (not a remote frame)
+    message.ss = 1;                  // Not single shot
+    message.self = 0;                // Normal transmission (not self reception)
+    twai_send(&message);
+    TextArea1Can_insertText[0] = '\0';
+    snprintf(TextArea1Can_insertText, sizeof(TextArea1Can_insertText), "Message sent: %s ID=0x%03lX, Data=[%02X %02X %02X %02X %02X %02X %02X %02X]\r\n",
+                    message.extd ? "Extended" : "Standard",
+                    message.identifier,
+                    message.data[0], message.data[1], message.data[2], message.data[3],
+                    message.data[4], message.data[5], message.data[6], message.data[7]);
+    lv_textarea_add_text(ui_TextArea1Can, TextArea1Can_insertText);
+}
+
+void button_CanClassClear_clicked(lv_event_t * e)
+{
+    lv_textarea_set_text(ui_TextArea1Can, "");
+}
+//********* page:canClass end ********* 
+
+//********* page:imgView *********
+//********* page:imgView end *********

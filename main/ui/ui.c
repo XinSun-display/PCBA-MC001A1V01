@@ -34,6 +34,7 @@ void ui_init(void)
     ui_GPIO_screen_init();
     ui_imgView_screen_init();
     ui_backlight_screen_init();
+    ui_canClass_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_Screen1);
 }
@@ -44,4 +45,5 @@ void ui_destroy(void)
     ui_GPIO_screen_destroy();
     ui_imgView_screen_destroy();
     ui_backlight_screen_destroy();
+    ui_canClass_screen_destroy();
 }

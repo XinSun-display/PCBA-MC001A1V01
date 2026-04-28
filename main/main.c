@@ -29,6 +29,12 @@ void log_ram_usage(void)
              heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM) / 1024);
 }
 
+void init_display_task(void *pvParameter)
+{
+    display_init();
+    vTaskDelete(NULL);
+}
+
 void app_main(void)
 {
     /* AW9523 INIT*/
@@ -39,7 +45,8 @@ void app_main(void)
     aw9523_set_level(AW9523_PORT_0, 0);
     aw9523_set_level(AW9523_PORT_1, 0);
 
-    display_init();
+    // Create an initialization task, force it to bind to Core 1 (which is consistent with LVGL_TASK_AFFINITY, to improve performance)
+    xTaskCreatePinnedToCore(init_display_task, "init_display_task", 4096, NULL, 5, NULL, 1);
 
     twai_init();
 

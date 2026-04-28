@@ -6,49 +6,52 @@
 #include "BSP_TWAI.h"
 
 #define TAG "TWAI"
+#define TWAI_QUEUE_LENGTH 10
+QueueHandle_t twai_TX_message_queue;
+QueueHandle_t twai_RX_message_queue;
 
-twai_TX_message_t twai_TX_message[TWAI_MESSAGE_POOL_SIZE]={0};
-twai_RX_message_pool_t twai_RX_message_pool={0};
-
+/**
+ * @brief Send task
+ */
 void twai_send_task(void *arg) 
 {
+    ESP_LOGI(TAG, "TWAI send task started");
     while (1) {
-        for (int i = 0; i < TWAI_MESSAGE_POOL_SIZE; i++) {
-            if (twai_TX_message[i].state == TWAI_TX_STATE_READY) {
-                twai_TX_message[i].state = TWAI_TX_STATE_SENDING;
-                esp_err_t err = twai_transmit(&twai_TX_message[i].message, pdMS_TO_TICKS(1000));
-                if (err == ESP_OK) {
-                    twai_TX_message[i].state = TWAI_TX_STATE_IDLE;
-                    // ESP_LOGI(TAG, "Message sent successfully");
-                } else {
-                    ESP_LOGE(TAG, "Message transmission failed: %s", esp_err_to_name(err));
-                    twai_TX_message[i].state = TWAI_TX_STATE_IDLE;
-                }
-                break;
+        twai_message_t message;
+        if(xQueueReceive(twai_TX_message_queue, &message, portMAX_DELAY) == pdPASS)
+        {
+            esp_err_t err = twai_transmit(&message, pdMS_TO_TICKS(1000));
+
+            if (err == ESP_OK) {
+                ESP_LOGI(TAG, "Message sent successfully");
+            } else {
+                ESP_LOGE(TAG, "Message transmission failed: %s", esp_err_to_name(err));
             }
         }
-        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
 
+/**
+ * @brief Receive task
+ */
 void twai_receive_task(void *arg) 
 {
+    ESP_LOGI(TAG, "TWAI receive task started");
     while (1) {
         twai_message_t message;
-        esp_err_t err = twai_receive(&message, pdMS_TO_TICKS(1000));
+        esp_err_t err = twai_receive(&message, portMAX_DELAY);
         if (err == ESP_OK) 
         {
-            ESP_LOGI(TAG, "Message received: ID=0x%X, Data=[%02X %02X %02X %02X %02X %02X %02X %02X]",
-                     message.identifier,
-                     message.data[0], message.data[1], message.data[2], message.data[3],
-                     message.data[4], message.data[5], message.data[6], message.data[7]);
-
-            memcpy(&twai_RX_message_pool.message[twai_RX_message_pool.in_index], &message, sizeof(twai_message_t));
-            twai_RX_message_pool.is_received[twai_RX_message_pool.in_index] = true;
-            twai_RX_message_pool.in_index=(twai_RX_message_pool.in_index+1)%TWAI_MESSAGE_POOL_SIZE;
+            if (uxQueueMessagesWaiting(twai_RX_message_queue) == TWAI_QUEUE_LENGTH) {
+                // First, remove the oldest entry by reading it out and discarding it
+                twai_message_t message_temp;
+                xQueueReceive(twai_RX_message_queue, &message_temp, 0); 
+            }
+            // There is now space available, so the new data can be inserted
+            xQueueSend(twai_RX_message_queue, &message, 0);
         } else if (err == ESP_ERR_TIMEOUT) 
         {
-            // ESP_LOGW(TAG, "Reception timed out");
+            ESP_LOGW(TAG, "Reception timed out");
         } else 
         {
             ESP_LOGE(TAG, "Message reception failed: %s", esp_err_to_name(err));
@@ -56,6 +59,9 @@ void twai_receive_task(void *arg)
     }
 }
 
+/**
+ * @brief Initialize the TWAI driver
+ */
 void twai_init(void)
 {
     // Configure TWAI driver
@@ -81,32 +87,90 @@ void twai_init(void)
         return;
     }
 
+    twai_TX_message_queue = xQueueCreate(TWAI_QUEUE_LENGTH, sizeof(twai_message_t));
+    twai_RX_message_queue = xQueueCreate(TWAI_QUEUE_LENGTH, sizeof(twai_message_t));
     // Create tasks
-    xTaskCreate(twai_send_task, "twai_send_task", 2048, NULL, 5, NULL);
-    xTaskCreate(twai_receive_task, "twai_receive_task", 2048, NULL, 5, NULL);
+    xTaskCreate(twai_send_task, "twai_send_task", 3072, NULL, 5, NULL);
+    xTaskCreate(twai_receive_task, "twai_receive_task", 3072, NULL, 5, NULL);
 }
 
+/**
+ * @brief Send a message
+ * @param message Pointer to the message to send
+ * @return ESP_OK if successful, ESP_FAIL otherwise
+ */
 esp_err_t twai_send(twai_message_t *message)
 {
-    for (int i = 0; i < TWAI_MESSAGE_POOL_SIZE; i++) {
-        if (twai_TX_message[i].state == TWAI_TX_STATE_IDLE) {
-            memcpy(&twai_TX_message[i].message, message, sizeof(twai_message_t));
-            twai_TX_message[i].state = TWAI_TX_STATE_READY;
-            return ESP_OK;
-        }
+    esp_err_t ret = ESP_OK;
+
+    if(xQueueSend(twai_TX_message_queue, message, pdMS_TO_TICKS(100)) == pdPASS)
+    {
+        ret = ESP_OK;
     }
-    ESP_LOGE(TAG, "TWAI TX message pool is full");
-    return ESP_ERR_NO_MEM;
+    else
+    {
+        ret = ESP_FAIL;
+    }
+
+    return ret;
 }
 
-esp_err_t twai_receive_get(twai_message_t *message)
+/**
+ * @brief Get the RX queue handle
+ * @return QueueHandle_t*
+ */
+QueueHandle_t* twai_get_rx_queue(void)
 {
-    for (int i = 0; i < TWAI_MESSAGE_POOL_SIZE; i++) {
-        if (twai_RX_message_pool.is_received[i]) {
-            memcpy(message, &twai_RX_message_pool.message[i], sizeof(twai_message_t));
-            twai_RX_message_pool.is_received[i] = false;
-            return ESP_OK;
-        }
+    return &twai_RX_message_queue;
+}
+
+//******************* example *******************
+void example_twai(void)
+{
+    twai_message_t message;
+
+    //init
+    twai_init();
+
+    //send
+    ESP_LOGI(TAG, "Sending data...");
+    message.identifier = 0x000;
+    message.data_length_code = 8;
+    message.data[0] = 0x0A;
+    message.data[1] = 0x0B;
+    message.data[2] = 0x0C;
+    message.data[3] = 0x0D;
+    message.data[4] = 0x0E;
+    message.data[5] = 0x0F;
+    message.data[6] = 0x10;
+    message.data[7] = 0x11;
+    message.extd = 0;                // Standard 11-bit identifier
+    message.rtr = 0;                 // Data frame (not a remote frame)
+    message.ss = 1;                  // Not single shot
+    message.self = 0;                // Normal transmission (not self reception)
+    esp_err_t err = twai_send(&message);
+    if(err == ESP_OK)
+    {
+        ESP_LOGI(TAG, "Message sent: %s ID=0x%03lX, Data=[%02X %02X %02X %02X %02X %02X %02X %02X]\r\n",
+            message.extd ? "Extended" : "Standard",
+            message.identifier,
+            message.data[0], message.data[1], message.data[2], message.data[3],
+            message.data[4], message.data[5], message.data[6], message.data[7]);
     }
-    return ESP_ERR_NOT_FOUND;
+    else
+    {
+        ESP_LOGE(TAG, "Message send failed: %s", esp_err_to_name(err));
+    }
+
+    //receive 
+    ESP_LOGI(TAG, "waiting for receiving data...");
+    QueueHandle_t* twai_RX_message_queue = twai_get_rx_queue();
+    if(xQueueReceive(*twai_RX_message_queue, &message, pdMS_TO_TICKS(100)) == pdPASS)//WAIT
+    {                   
+        ESP_LOGI(TAG, "Message received: %s ID=0x%03lX, Data=[%02X %02X %02X %02X %02X %02X %02X %02X]\r\n",
+                message.extd ? "Extended" : "Standard",
+                message.identifier,
+                message.data[0], message.data[1], message.data[2], message.data[3],
+                message.data[4], message.data[5], message.data[6], message.data[7]);
+    }
 }

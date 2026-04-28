@@ -22,6 +22,9 @@ extern lv_obj_t * ui_Label1;
 extern void ui_event_ButtonBacklight(lv_event_t * e);
 extern lv_obj_t * ui_ButtonBacklight;
 extern lv_obj_t * ui_Label2;
+extern void ui_event_ButtonCanClass(lv_event_t * e);
+extern lv_obj_t * ui_ButtonCanClass;
+extern lv_obj_t * ui_Label5;
 extern lv_obj_t * ui_Screen1Row3;
 // CUSTOM VARIABLES
 

@@ -22,6 +22,7 @@ extern "C" {
 #include "screens/ui_GPIO.h"
 #include "screens/ui_imgView.h"
 #include "screens/ui_backlight.h"
+#include "screens/ui_canClass.h"
 
 ///////////////////// VARIABLES ////////////////////
 
