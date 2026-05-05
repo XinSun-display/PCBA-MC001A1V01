@@ -12,7 +12,10 @@ extern "C" {
 
 void Button_Backlight_clicked(lv_event_t * e);
 void Button_CanClass_clicked(lv_event_t * e);
+void Button_imgView_clicked(lv_event_t * e);
 void switch_IO__value_changed(lv_event_t * e);
+void button_ImgViewLeft_clicked(lv_event_t * e);
+void button_ImgViewRight_clicked(lv_event_t * e);
 void button_backlightOnOff_clicked(lv_event_t * e);
 void slider_backlight_value_changed(lv_event_t * e);
 void Button_canTest1_clicked(lv_event_t * e);

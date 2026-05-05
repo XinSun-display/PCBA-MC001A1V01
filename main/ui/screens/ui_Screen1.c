@@ -14,6 +14,8 @@ lv_obj_t * ui_ButtonBacklight = NULL;
 lv_obj_t * ui_Label2 = NULL;
 lv_obj_t * ui_ButtonCanClass = NULL;
 lv_obj_t * ui_Label5 = NULL;
+lv_obj_t * ui_ButtonImgView = NULL;
+lv_obj_t * ui_Label8 = NULL;
 lv_obj_t * ui_Screen1Row3 = NULL;
 // event funtions
 void ui_event_ButtonGPIO(lv_event_t * e)
@@ -40,6 +42,15 @@ void ui_event_ButtonCanClass(lv_event_t * e)
 
     if(event_code == LV_EVENT_CLICKED) {
         Button_CanClass_clicked(e);
+    }
+}
+
+void ui_event_ButtonImgView(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        Button_imgView_clicked(e);
     }
 }
 
@@ -124,6 +135,19 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_align(ui_Label5, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label5, "can class");
 
+    ui_ButtonImgView = lv_button_create(ui_Screen1Row2);
+    lv_obj_set_width(ui_ButtonImgView, 100);
+    lv_obj_set_height(ui_ButtonImgView, 50);
+    lv_obj_set_align(ui_ButtonImgView, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_ButtonImgView, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_ButtonImgView, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Label8 = lv_label_create(ui_ButtonImgView);
+    lv_obj_set_width(ui_Label8, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label8, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Label8, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label8, "imgView");
+
     ui_Screen1Row3 = lv_obj_create(ui_Screen1);
     lv_obj_remove_style_all(ui_Screen1Row3);
     lv_obj_set_width(ui_Screen1Row3, lv_pct(100));
@@ -138,6 +162,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_add_event_cb(ui_ButtonGPIO, ui_event_ButtonGPIO, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ButtonBacklight, ui_event_ButtonBacklight, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ButtonCanClass, ui_event_ButtonCanClass, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ButtonImgView, ui_event_ButtonImgView, LV_EVENT_ALL, NULL);
 
 }
 
@@ -155,6 +180,8 @@ void ui_Screen1_screen_destroy(void)
     ui_Label2 = NULL;
     ui_ButtonCanClass = NULL;
     ui_Label5 = NULL;
+    ui_ButtonImgView = NULL;
+    ui_Label8 = NULL;
     ui_Screen1Row3 = NULL;
 
 }

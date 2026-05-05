@@ -32,7 +32,10 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
-LV_IMG_DECLARE(ui_img_1079216036);    // assets/水果圖_480x800.png
+LV_IMG_DECLARE(ui_img_152448348);    // assets/水果圖_800x480.png
+LV_IMG_DECLARE(ui_img_flower_b_800x480_png);    // assets/flower_b_800x480.png
+LV_IMG_DECLARE(ui_img_flower_r_800x480_png);    // assets/flower_r_800x480.png
+LV_IMG_DECLARE(ui_img_img_800x480_png);    // assets/img_800x480.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_tw1616);

@@ -6,7 +6,10 @@ SET(SOURCES screens/ui_Screen1.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c
-    images/ui_img_1079216036.c
+    images/ui_img_152448348.c
+    images/ui_img_flower_b_800x480_png.c
+    images/ui_img_flower_r_800x480_png.c
+    images/ui_img_img_800x480_png.c
     fonts/ui_font_tw1616.c)
 
 add_library(ui ${SOURCES})

@@ -6,8 +6,42 @@
 #include "../ui.h"
 
 lv_obj_t * ui_imgView = NULL;
+lv_obj_t * ui_Container4 = NULL;
 lv_obj_t * ui_Image1 = NULL;
+lv_obj_t * ui_Image2 = NULL;
+lv_obj_t * ui_Image3 = NULL;
+lv_obj_t * ui_Image4 = NULL;
+lv_obj_t * ui_Container5 = NULL;
+lv_obj_t * ui_imgViewButtonLeft = NULL;
+lv_obj_t * ui_imgViewButtonBack = NULL;
+lv_obj_t * ui_imgViewButtonRight = NULL;
 // event funtions
+void ui_event_imgViewButtonLeft(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        button_ImgViewLeft_clicked(e);
+    }
+}
+
+void ui_event_imgViewButtonBack(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0, &ui_Screen1_screen_init);
+    }
+}
+
+void ui_event_imgViewButtonRight(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        button_ImgViewRight_clicked(e);
+    }
+}
 
 // build funtions
 
@@ -16,14 +50,83 @@ void ui_imgView_screen_init(void)
     ui_imgView = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_imgView, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_Image1 = lv_image_create(ui_imgView);
-    lv_image_set_src(ui_Image1, &ui_img_1079216036);
+    ui_Container4 = lv_obj_create(ui_imgView);
+    lv_obj_remove_style_all(ui_Container4);
+    lv_obj_set_width(ui_Container4, lv_pct(100));
+    lv_obj_set_height(ui_Container4, lv_pct(100));
+    lv_obj_set_align(ui_Container4, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_Container4, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_Container4, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_Container4, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Image1 = lv_image_create(ui_Container4);
+    lv_image_set_src(ui_Image1, &ui_img_152448348);
     lv_obj_set_width(ui_Image1, lv_pct(100));
     lv_obj_set_height(ui_Image1, lv_pct(100));
     lv_obj_set_align(ui_Image1, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Image1, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_remove_flag(ui_Image1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_image_set_rotation(ui_Image1, 900);
+
+    ui_Image2 = lv_image_create(ui_Container4);
+    lv_image_set_src(ui_Image2, &ui_img_flower_b_800x480_png);
+    lv_obj_set_width(ui_Image2, LV_SIZE_CONTENT);   /// 801
+    lv_obj_set_height(ui_Image2, LV_SIZE_CONTENT);    /// 480
+    lv_obj_set_align(ui_Image2, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Image2, LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_Image2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Image3 = lv_image_create(ui_Container4);
+    lv_image_set_src(ui_Image3, &ui_img_flower_r_800x480_png);
+    lv_obj_set_width(ui_Image3, LV_SIZE_CONTENT);   /// 801
+    lv_obj_set_height(ui_Image3, LV_SIZE_CONTENT);    /// 480
+    lv_obj_set_align(ui_Image3, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Image3, LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_Image3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Image4 = lv_image_create(ui_Container4);
+    lv_image_set_src(ui_Image4, &ui_img_img_800x480_png);
+    lv_obj_set_width(ui_Image4, LV_SIZE_CONTENT);   /// 801
+    lv_obj_set_height(ui_Image4, LV_SIZE_CONTENT);    /// 480
+    lv_obj_set_align(ui_Image4, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Image4, LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_Image4, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Container5 = lv_obj_create(ui_imgView);
+    lv_obj_remove_style_all(ui_Container5);
+    lv_obj_set_width(ui_Container5, lv_pct(100));
+    lv_obj_set_height(ui_Container5, lv_pct(100));
+    lv_obj_set_align(ui_Container5, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_Container5, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_Container5, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_remove_flag(ui_Container5, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_imgViewButtonLeft = lv_button_create(ui_Container5);
+    lv_obj_set_width(ui_imgViewButtonLeft, lv_pct(20));
+    lv_obj_set_height(ui_imgViewButtonLeft, lv_pct(100));
+    lv_obj_set_align(ui_imgViewButtonLeft, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_imgViewButtonLeft, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_imgViewButtonLeft, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_opa(ui_imgViewButtonLeft, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_imgViewButtonBack = lv_button_create(ui_Container5);
+    lv_obj_set_width(ui_imgViewButtonBack, lv_pct(60));
+    lv_obj_set_height(ui_imgViewButtonBack, lv_pct(100));
+    lv_obj_set_align(ui_imgViewButtonBack, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_imgViewButtonBack, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_imgViewButtonBack, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_opa(ui_imgViewButtonBack, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_imgViewButtonRight = lv_button_create(ui_Container5);
+    lv_obj_set_width(ui_imgViewButtonRight, lv_pct(20));
+    lv_obj_set_height(ui_imgViewButtonRight, lv_pct(100));
+    lv_obj_set_align(ui_imgViewButtonRight, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_imgViewButtonRight, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_imgViewButtonRight, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_opa(ui_imgViewButtonRight, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_add_event_cb(ui_imgViewButtonLeft, ui_event_imgViewButtonLeft, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_imgViewButtonBack, ui_event_imgViewButtonBack, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_imgViewButtonRight, ui_event_imgViewButtonRight, LV_EVENT_ALL, NULL);
 
 }
 
@@ -33,6 +136,14 @@ void ui_imgView_screen_destroy(void)
 
     // NULL screen variables
     ui_imgView = NULL;
+    ui_Container4 = NULL;
     ui_Image1 = NULL;
+    ui_Image2 = NULL;
+    ui_Image3 = NULL;
+    ui_Image4 = NULL;
+    ui_Container5 = NULL;
+    ui_imgViewButtonLeft = NULL;
+    ui_imgViewButtonBack = NULL;
+    ui_imgViewButtonRight = NULL;
 
 }

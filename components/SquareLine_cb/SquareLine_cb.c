@@ -61,6 +61,36 @@ void Button_CanClass_clicked(lv_event_t * e)
     
     _ui_screen_change(&ui_canClass, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0, &ui_canClass_screen_init);
 }
+
+void Button_imgView_clicked(lv_event_t * e)
+{
+    // Set the opacity of the button to 0 when it is pressed
+    static const lv_style_prop_t props[] = {LV_STYLE_OPA, 0}; // Listen for opacity property
+
+    static lv_style_transition_dsc_t trans_def;
+    lv_style_transition_dsc_init(&trans_def, props, lv_anim_path_linear, 200, 0, NULL); 
+
+    static lv_style_transition_dsc_t trans_pr;
+    lv_style_transition_dsc_init(&trans_pr, props, lv_anim_path_linear, 200, 0, NULL);
+
+    static lv_style_t style_def;// Default style
+    lv_style_init(&style_def);
+    lv_style_set_opa(&style_def, LV_OPA_0); // Initial opacity 0%      
+    lv_style_set_transition(&style_def, &trans_def);
+
+    static lv_style_t style_pr;
+    lv_style_init(&style_pr);
+    lv_style_set_opa(&style_pr, LV_OPA_100); // Opacity 100% after pressed
+    lv_style_set_bg_color(&style_pr, lv_palette_main(LV_PALETTE_GREY));
+    lv_style_set_transition(&style_pr, &trans_pr);    
+
+    lv_obj_add_style(ui_imgViewButtonLeft, &style_def, 0);               
+    lv_obj_add_style(ui_imgViewButtonLeft, &style_pr, LV_STATE_PRESSED); 
+    lv_obj_add_style(ui_imgViewButtonRight, &style_def, 0);               
+    lv_obj_add_style(ui_imgViewButtonRight, &style_pr, LV_STATE_PRESSED); 
+
+    _ui_screen_change(&ui_imgView, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0, &ui_imgView_screen_init);
+}
 //********* page:Screen1 end *********
 
 //********* page:GPIO *********
@@ -268,4 +298,35 @@ void button_CanClassClear_clicked(lv_event_t * e)
 //********* page:canClass end ********* 
 
 //********* page:imgView *********
+const lv_image_dsc_t * imgView_image_list[] = {
+    &ui_img_152448348,
+    &ui_img_flower_b_800x480_png,
+    &ui_img_flower_r_800x480_png,
+    &ui_img_img_800x480_png,
+};
+static int imgView_image_index = 0;
+void button_ImgViewLeft_clicked(lv_event_t * e)
+{
+    int indexMax = sizeof(imgView_image_list)/sizeof(lv_image_dsc_t*);
+
+    if(imgView_image_index == 0)
+    {
+        imgView_image_index = indexMax - 1;
+    }
+    else
+    {
+        imgView_image_index--;
+    }
+
+    lv_image_set_src(ui_Image1, imgView_image_list[imgView_image_index]);
+}
+
+void button_ImgViewRight_clicked(lv_event_t * e)
+{
+    int indexMax = sizeof(imgView_image_list)/sizeof(lv_image_dsc_t*);
+
+    imgView_image_index=(imgView_image_index+1)%indexMax;
+
+    lv_image_set_src(ui_Image1, imgView_image_list[imgView_image_index]);
+}
 //********* page:imgView end *********

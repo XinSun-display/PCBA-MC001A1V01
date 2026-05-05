@@ -14,7 +14,18 @@ extern "C" {
 extern void ui_imgView_screen_init(void);
 extern void ui_imgView_screen_destroy(void);
 extern lv_obj_t * ui_imgView;
+extern lv_obj_t * ui_Container4;
 extern lv_obj_t * ui_Image1;
+extern lv_obj_t * ui_Image2;
+extern lv_obj_t * ui_Image3;
+extern lv_obj_t * ui_Image4;
+extern lv_obj_t * ui_Container5;
+extern void ui_event_imgViewButtonLeft(lv_event_t * e);
+extern lv_obj_t * ui_imgViewButtonLeft;
+extern void ui_event_imgViewButtonBack(lv_event_t * e);
+extern lv_obj_t * ui_imgViewButtonBack;
+extern void ui_event_imgViewButtonRight(lv_event_t * e);
+extern lv_obj_t * ui_imgViewButtonRight;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

@@ -25,6 +25,9 @@ extern lv_obj_t * ui_Label2;
 extern void ui_event_ButtonCanClass(lv_event_t * e);
 extern lv_obj_t * ui_ButtonCanClass;
 extern lv_obj_t * ui_Label5;
+extern void ui_event_ButtonImgView(lv_event_t * e);
+extern lv_obj_t * ui_ButtonImgView;
+extern lv_obj_t * ui_Label8;
 extern lv_obj_t * ui_Screen1Row3;
 // CUSTOM VARIABLES
 
