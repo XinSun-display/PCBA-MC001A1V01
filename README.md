@@ -24,9 +24,8 @@ PCBA-MC001A1V0x Development Board Demo Project
 
 3. **Open Project**
    - Use "File > Open Folder" to open this project folder
-   - Edit `.vscode/settings.json` and `.vscode/c_cpp_properties.json`, then change `IDF_PATH` and `IDF_TOOLS_PATH` to your own paths
-     ![settings](/docs/assets/img/settings.png)
-     ![c_cpp_properties](/docs/assets/img/c_cpp_properties.png)
+   - Set the ESP-IDF version: `ESP-IDF: Explorer > Select current ESP-IDF version`
+   ![illustrate](/docs/assets/gif/illustrate.gif)
 
    - VS Code will automatically recognize it as an ESP-IDF project
 

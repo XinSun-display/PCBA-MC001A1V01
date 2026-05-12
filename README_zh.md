@@ -22,9 +22,7 @@ PCBA-MC001A1V0x Development Board Demo Project
 
 3. **開啟專案**
    - 使用 "File > Open Folder" 開啟此專案資料夾
-   - 修改 .vscode/settings.json .vscode/c_cpp_properties.json ,將 IDF_PATH 和 IDF_TOOLS_PATH 改成自己的路徑
-     ![settings](/docs/assets/img/settings.png)
-     ![c_cpp_properties](/docs/assets/img/c_cpp_properties.png)
+   ![illustrate](/docs/assets/gif/illustrate.gif)
 
      VS Code 將會自動識別為 ESP-IDF 專案
 
