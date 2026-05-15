@@ -8,9 +8,9 @@
  * On original hardware, LCD_BL_ON_LEVEL must be set to 0.
  * Be advised: This may trigger visible stripes on specific display models during the boot process.
  */
-#define LCD_BL_ON_LEVEL     (1)
+#define LCD_BL_ON_LEVEL     (0)
 
-#define BACKLIGHT_PWM_ENABLE (1)
+#define BACKLIGHT_PWM_ENABLE (0)
 #if BACKLIGHT_PWM_ENABLE
 #define BACKLIGHT_PWM_FREQUENCY (1000)
 #define BACKLIGHT_PWM_DUTY_RESOLUTION LEDC_TIMER_13_BIT

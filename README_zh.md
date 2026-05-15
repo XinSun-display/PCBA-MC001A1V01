@@ -59,6 +59,8 @@ PCBA-MC001A1V0x Development Board Demo Project
 
 #### 注意事項：
 
+- 請根據所買顯示器修改源碼(components/display/display.c - 144行)
+![display_chose](/docs/assets/img/display_chose.png)
 - 修改 UI 時請確保在 `lvgl_port_lock(0)` 和 `lvgl_port_unlock()` 之間進行
 - 如需更複雜的 UI 設計，建議使用 SquareLine Studio 工具來設計介面
 

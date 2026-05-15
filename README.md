@@ -62,6 +62,8 @@ If you want to modify the user interface, simply edit the `ui_init()` function i
 
 #### Notes:
 
+- Please modify the source code according to your purchased display (components/display/display.c - line 144)
+![display_chose](/docs/assets/img/display_chose.png)
 - When modifying UI, ensure it's done between `lvgl_port_lock(0)` and `lvgl_port_unlock()`
 - For more complex UI designs, it's recommended to use SquareLine Studio tool for interface design
 

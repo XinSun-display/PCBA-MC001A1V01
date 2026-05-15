@@ -79,6 +79,7 @@ static lv_display_t *lvgl_disp = NULL;
  typedef enum
  {
    LCD_XF043AR_WQ  = 0x00, /* XF043AR_WQ */
+   LCD_XF043WQV15A_TTNL, /* XF043WQV15A_TTNL */
    LCD_XF05AR_WQ, /* XF05AR_WQ */
    LCD_XF070WV02B_TTUL, /* XF070WV02B_TTUL */
 
@@ -98,6 +99,19 @@ const LCD_PARAM_TypeDef lcd_param[LCD_TYPE_NUM]={
         .lcd_pixel_height = 480,
         .CTP_init = FT5446_Init,
         .CTP_scan = FT5446_ScanV1,
+    },
+    {/* XF043WQV15A_TTNL */
+        .hbp = 8,
+        .vbp = 16,
+        .hsw = 4,
+        .vsw = 4,
+        .hfp = 8,
+        .vfp = 16,
+        .clock_HZ = 24000000,   //24MHz
+        .lcd_pixel_width = 480,
+        .lcd_pixel_height = 272,
+        .CTP_init = NULL,
+        .CTP_scan = NULL,
     },
     {/* XF05AR_WQ */
         .hbp = 16,//8,
@@ -128,9 +142,10 @@ const LCD_PARAM_TypeDef lcd_param[LCD_TYPE_NUM]={
 };
 
 /* Current used LCD, default is LCD_XF05AR_WQ */
-// #define CUR_LCD  LCD_XF043AR_WQ
+#define CUR_LCD  LCD_XF043AR_WQ
+// #define CUR_LCD  LCD_XF043WQV15A_TTNL
 // #define CUR_LCD  LCD_XF05AR_WQ
-#define CUR_LCD  LCD_XF070WV02B_TTUL
+// #define CUR_LCD  LCD_XF070WV02B_TTUL
 
 
 /**
@@ -186,7 +201,7 @@ static esp_err_t app_lcd_init(void)
         },
         .flags.fb_in_psram = true, // allocate frame buffer from PSRAM
         .flags.double_fb = LCD_DRAW_BUFF_DOUBLE,
-        .bounce_buffer_size_px = LCD_PIXEL_WIDTH * LCD_DRAW_BUFF_HEIGHT,
+        .bounce_buffer_size_px = LCD_PIXEL_WIDTH * ((LCD_PIXEL_HEIGHT % LCD_DRAW_BUFF_HEIGHT == 0) ? LCD_DRAW_BUFF_HEIGHT : 8), //If LCD_PIXEL_HEIGHT cannot be divided exactly by LCD_DRAW_BUFF_HEIGHT, 8 lines will be fixedly assigned (8 can divide most display heights evenly)
         .num_fbs = LCD_DRAW_BUFF_DOUBLE ? 2 : 1,
     };
     ESP_ERROR_CHECK(esp_lcd_new_rgb_panel(&panel_config, &lcd_panel));
