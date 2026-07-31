@@ -23,6 +23,7 @@ extern "C" {
 #include "screens/ui_imgView.h"
 #include "screens/ui_backlight.h"
 #include "screens/ui_canClass.h"
+#include "screens/ui_uart0.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -32,6 +33,7 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
+LV_IMG_DECLARE(ui_img_218611_l_800x480_png);    // assets/218611_l_800x480.png
 LV_IMG_DECLARE(ui_img_152448348);    // assets/水果圖_800x480.png
 LV_IMG_DECLARE(ui_img_flower_b_800x480_png);    // assets/flower_b_800x480.png
 LV_IMG_DECLARE(ui_img_flower_r_800x480_png);    // assets/flower_r_800x480.png

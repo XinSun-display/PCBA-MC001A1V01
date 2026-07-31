@@ -10,12 +10,17 @@
 #include "ui.h"
 #include "esp_log.h"
 #include "twai/BSP_TWAI.h"
+#include "uart/BSP_uart.h"
 
 #define TAG "SquareLine_cb"
 
 TaskHandle_t TextArea1Can_taskHandle = NULL;
 static char TextArea1Can_insertText[128] ={0};
 void TextArea1Can_task(void *arg);
+
+TaskHandle_t TextArea1Uart0_taskHandle = NULL;
+static char TextArea1Uart0_insertText[128] ={0};
+void TextArea1Uart0_task(void *arg);
 
 //********* page:Screen1 *********
 void Button_Backlight_clicked(lv_event_t * e)
@@ -90,6 +95,46 @@ void Button_imgView_clicked(lv_event_t * e)
     lv_obj_add_style(ui_imgViewButtonRight, &style_pr, LV_STATE_PRESSED); 
 
     _ui_screen_change(&ui_imgView, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0, &ui_imgView_screen_init);
+}
+
+void Button_uart0_clicked(lv_event_t * e)
+{
+    if(!TextArea1Uart0_taskHandle)// first time to click the button, create a task to receive the UART message and add some labels to the button
+    {
+        xTaskCreate(TextArea1Uart0_task, "TextArea1Uart0_task", 4096, NULL, 10, &TextArea1Uart0_taskHandle);// create a task to receive the UART message
+
+        lv_obj_t* Label_uart0Send1 = lv_label_create(ui_ButtonUart0Send1);
+        lv_obj_set_width(Label_uart0Send1, LV_SIZE_CONTENT);   
+        lv_obj_set_height(Label_uart0Send1, LV_SIZE_CONTENT);    
+        lv_obj_set_align(Label_uart0Send1, LV_ALIGN_CENTER);
+        lv_label_set_text(Label_uart0Send1, "send test 1");
+
+        lv_obj_t* Label_uart0Send2 = lv_label_create(ui_ButtonUart0Send2);
+        lv_obj_set_width(Label_uart0Send2, LV_SIZE_CONTENT);   
+        lv_obj_set_height(Label_uart0Send2, LV_SIZE_CONTENT);    
+        lv_obj_set_align(Label_uart0Send2, LV_ALIGN_CENTER);
+        lv_label_set_text(Label_uart0Send2, "send test 2");
+
+        lv_obj_t* Label_uart0Send3 = lv_label_create(ui_ButtonUart0Send3);
+        lv_obj_set_width(Label_uart0Send3, LV_SIZE_CONTENT);   
+        lv_obj_set_height(Label_uart0Send3, LV_SIZE_CONTENT);    
+        lv_obj_set_align(Label_uart0Send3, LV_ALIGN_CENTER);
+        lv_label_set_text(Label_uart0Send3, "send test 3");
+
+        lv_obj_t* Label_uart0Clear = lv_label_create(ui_ButtonUart0Clear);
+        lv_obj_set_width(Label_uart0Clear, LV_SIZE_CONTENT);   
+        lv_obj_set_height(Label_uart0Clear, LV_SIZE_CONTENT);    
+        lv_obj_set_align(Label_uart0Clear, LV_ALIGN_CENTER);
+        lv_label_set_text(Label_uart0Clear, "clear");
+
+        lv_obj_t* Label_uart0Back = lv_label_create(ui_ButtonUart0Back);
+        lv_obj_set_width(Label_uart0Back, LV_SIZE_CONTENT);   
+        lv_obj_set_height(Label_uart0Back, LV_SIZE_CONTENT);    
+        lv_obj_set_align(Label_uart0Back, LV_ALIGN_CENTER);
+        lv_label_set_text(Label_uart0Back, "back");
+    }
+
+    _ui_screen_change(&ui_uart0, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0, &ui_uart0_screen_init);
 }
 //********* page:Screen1 end *********
 
@@ -330,3 +375,74 @@ void button_ImgViewRight_clicked(lv_event_t * e)
     lv_image_set_src(ui_Image1, imgView_image_list[imgView_image_index]);
 }
 //********* page:imgView end *********
+
+//********* page:uart0 *********
+void TextArea1Uart0_update_text_cb(void * user_data) 
+{
+    lv_textarea_add_text(ui_TextArea1Uart0, user_data);     
+}
+
+void TextArea1Uart0_task(void *arg) 
+{
+    ESP_LOGI(TAG, "TextArea1Uart0_task started");
+
+    while(1)
+    {
+        UART_Msg_t uart0_RX_data;
+        QueueHandle_t* uart0_RX_message_queue = uart_get_rx_queue();
+        if(xQueueReceive(*uart0_RX_message_queue, &uart0_RX_data, pdMS_TO_TICKS(100)) == pdPASS)
+        {
+            int insertLength = uart0_RX_data.length;
+            int buf_cap = sizeof(TextArea1Uart0_insertText);
+            // Each byte takes "XX " (3 chars)
+            if (insertLength > 0) {
+                int max_bytes = (buf_cap - 1) / 3;
+                if (insertLength > max_bytes) insertLength = max_bytes;
+                for (int i = 0; i < insertLength; i++) {
+                    snprintf(&TextArea1Uart0_insertText[i*3], buf_cap - i*3, "%02X ", (unsigned char)uart0_RX_data.data[i]);
+                }
+                // Remove trailing space and ensure null-terminator
+                int last_pos = insertLength * 3;
+                if(last_pos >= buf_cap) last_pos = buf_cap - 1;
+                if (last_pos > 0 && last_pos < buf_cap) {
+                    TextArea1Uart0_insertText[last_pos] = '\0';
+                } else {
+                    TextArea1Uart0_insertText[buf_cap - 1] = '\0';
+                }
+            } else {
+                TextArea1Uart0_insertText[0] = '\0';
+            }
+            lv_async_call(TextArea1Uart0_update_text_cb, &TextArea1Uart0_insertText); // For thread safety, needs to be called asynchronously and executed in the LVGL thread
+        }
+    }   
+}
+void Button_uart0Test1_clicked(lv_event_t * e)
+{
+    UART_Msg_t message;
+    message.length = strlen("uart0 test 1\r\n");
+    snprintf(message.data, sizeof(message.data), "uart0 test 1\r\n");
+    uart_send(&message);
+}
+
+void Button_uart0Test2_clicked(lv_event_t * e)
+{
+    UART_Msg_t message;
+    message.length = strlen("uart0 test 2\r\n");
+    snprintf(message.data, sizeof(message.data), "uart0 test 2\r\n");
+    uart_send(&message);
+}
+
+void Button_uart0Test3_clicked(lv_event_t * e)
+{
+    UART_Msg_t message;
+    message.length = strlen("uart0 test 3\r\n");
+    snprintf(message.data, sizeof(message.data), "uart0 test 3\r\n");
+    uart_send(&message);
+}
+
+void button_uart0Clear_clicked(lv_event_t * e)
+{
+    lv_textarea_set_text(ui_TextArea1Uart0, "");
+}
+//********* page:uart0 end *********
+

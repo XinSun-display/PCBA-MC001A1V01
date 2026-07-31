@@ -3,9 +3,11 @@ screens/ui_GPIO.c
 screens/ui_imgView.c
 screens/ui_backlight.c
 screens/ui_canClass.c
+screens/ui_uart0.c
 ui.c
 components/ui_comp_hook.c
 ui_helpers.c
+images/ui_img_218611_l_800x480_png.c
 images/ui_img_152448348.c
 images/ui_img_flower_b_800x480_png.c
 images/ui_img_flower_r_800x480_png.c

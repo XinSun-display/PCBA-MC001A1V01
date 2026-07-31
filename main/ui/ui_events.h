@@ -13,6 +13,7 @@ extern "C" {
 void Button_Backlight_clicked(lv_event_t * e);
 void Button_CanClass_clicked(lv_event_t * e);
 void Button_imgView_clicked(lv_event_t * e);
+void Button_uart0_clicked(lv_event_t * e);
 void switch_IO__value_changed(lv_event_t * e);
 void button_ImgViewLeft_clicked(lv_event_t * e);
 void button_ImgViewRight_clicked(lv_event_t * e);
@@ -22,6 +23,10 @@ void Button_canTest1_clicked(lv_event_t * e);
 void Button_canTest2_clicked(lv_event_t * e);
 void Button_canTest3_clicked(lv_event_t * e);
 void button_CanClassClear_clicked(lv_event_t * e);
+void Button_uart0Test1_clicked(lv_event_t * e);
+void Button_uart0Test2_clicked(lv_event_t * e);
+void Button_uart0Test3_clicked(lv_event_t * e);
+void button_uart0Clear_clicked(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

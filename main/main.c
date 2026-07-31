@@ -7,6 +7,7 @@
 #include "display.h"
 #include "aw9523.h"
 #include "BSP_TWAI.h"
+#include "BSP_uart.h"
 
 static const char *TAG = "MAIN";
 
@@ -49,6 +50,7 @@ void app_main(void)
     xTaskCreatePinnedToCore(init_display_task, "init_display_task", 4096, NULL, 5, NULL, 1);
 
     twai_init();
+    uart_init();
 
     // log_ram_usage();
 
